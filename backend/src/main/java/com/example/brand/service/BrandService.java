@@ -2,21 +2,10 @@ package com.example.brand.service;
 
 import com.example.brand.model.Brand;
 import com.example.brand.repository.BrandRepository;
-import org.springframework.stereotype.Service;
-
 import jakarta.annotation.PostConstruct;
-import java.util.List;
-
-@Service
-public class BrandService {
-
-    private final BrandRepository brandRepository;
-
-    public BrandService(BrandRepository brandRepository) {
-        this.brandRepository = brandRepository;
-    }
-
+import org.springframework.stereotype.Service;
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class BrandService {
