@@ -68,3 +68,231 @@
   object-fit: contain; /* Ensure image aspect ratio is maintained */
   border-radius: 4px;
 }
+
+/* Styles for the fetch URL section */
+.fetch-url-container {
+  margin-bottom: 25px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.fetch-url-container h2 {
+  margin-top: 0;
+  font-size: 1.4em;
+  color: #333;
+}
+
+.fetch-url-container .form-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px; /* For spacing if loading/error messages appear below */
+}
+
+.fetch-url-container label {
+  font-weight: bold;
+  margin-right: 5px;
+  color: #555;
+}
+
+.fetch-url-container input[type="url"] {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+}
+
+.fetch-url-container button {
+  padding: 10px 18px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.fetch-url-container button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.fetch-url-container button:disabled {
+  background-color: #ced4da;
+  cursor: not-allowed;
+}
+
+/* Styling for the fetched brand preview area */
+.fetched-brand-details {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px dashed #007bff;
+  background-color: #e7f3ff;
+  border-radius: 5px;
+}
+.fetched-brand-details h3{
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+  color: #0056b3;
+  border-bottom: none; /* Override generic h3 if needed */
+  padding-top: 0; /* Override generic h3 if needed */
+}
+.fetched-brand-details button {
+  margin-right: 10px;
+  background-color: #28a745; /* Green for add */
+}
+.fetched-brand-details button:last-of-type {
+  background-color: #dc3545; /* Red for clear/cancel */
+}
+.fetched-brand-details button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+/* Ensure loading/error messages specific to fetch are styled and have space */
+.fetch-url-container .loading,
+.fetch-url-container .error {
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 4px;
+  text-align: left; /* Override global text-align: center if it was there */
+}
+
+.fetch-url-container .loading {
+  background-color: #eef;
+  border: 1px solid #cce;
+  color: #339;
+}
+
+.fetch-url-container .error {
+  background-color: #fdd;
+  border: 1px solid #fbb;
+  color: #c33;
+}
+
+/* Detailed styles for .fetched-brand-details section */
+.fetched-brand-details { /* This is the main container for the preview */
+  margin-top: 20px; /* Increased margin from .fetch-url-container */
+  padding: 20px; /* Increased padding */
+  border: 1px solid #007bff; /* Highlight color for fetched brand */
+  background-color: #f0f6ff; /* Lighter blueish background */
+  border-radius: 8px; /* Consistent with other containers */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08); /* Subtle shadow */
+}
+
+.fetched-brand-details .brand-name {
+  font-size: 1.6em; /* Larger name for preview */
+  font-weight: bold;
+  color: #0056b3; /* Darker blue for name */
+  margin-top: 0; /* Reset margin if from .brand-card */
+  margin-bottom: 15px;
+}
+
+.fetched-brand-details .fetched-logo {
+  max-width: 180px; /* Larger logo for preview */
+  max-height: 120px; /* Adjusted height */
+  display: block;
+  margin: 0 auto 15px auto; /* Center logo */
+  border: 2px solid #fff; /* White border around logo */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border-radius: 4px;
+}
+
+.fetched-brand-details .brand-description {
+  font-size: 1em; /* Slightly larger description */
+  color: #333;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.fetched-brand-details .section-title { /* Replaces h3 from .brand-card if used */
+  font-size: 1.1em; /* Adjusted size for section titles */
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 8px;
+  color: #0056b3; /* Consistent title color */
+  /* border-bottom: 1px solid #cce0ff; */ /* Lighter border for sections */
+  /* padding-bottom: 5px; */
+  /* These override .brand-card h3 specifically for this section */
+  border-top: none;
+  padding-top: 0;
+}
+.fetched-brand-details .brand-card h3 { /* remove top border from generic brand-card h3 */
+    border-top: none;
+    padding-top: 0;
+    margin-top: 5px; /* reduce space if h3 is used instead of h5 */
+}
+
+
+.fetched-brand-details .color-palette {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px; /* Gap between color items */
+  margin-bottom: 10px;
+}
+
+.fetched-brand-details .color-swatch-container {
+  display: flex;
+  flex-direction: column; /* Stack swatch and code */
+  align-items: center; /* Center items in the column */
+  min-width: 60px; /* Ensure some space for each color */
+}
+
+.fetched-brand-details .color-swatch { /* Overrides .brand-card .color-swatch */
+  width: 30px;   /* Larger swatch */
+  height: 30px;
+  border: 1px solid #aaa; /* Darker border for better visibility */
+  margin-bottom: 5px; /* Space between swatch and code */
+  border-radius: 4px; /* Rounded swatch */
+}
+
+.fetched-brand-details .color-code {
+  font-size: 0.85em;
+  color: #555;
+  background-color: #fff;
+  padding: 1px 4px;
+  border-radius: 3px;
+  border: 1px solid #eee;
+}
+
+/* Using general .font-list, .image-list, .logo-list from brand-card */
+/* Add specific overrides for .fetched-brand-details if necessary */
+.fetched-brand-details .font-list {
+  padding-left: 20px; /* Ensure padding */
+}
+
+.fetched-brand-details .image-list img,
+.fetched-brand-details .logo-list img {
+  max-width: 90px;
+  max-height: 70px;
+  /* margin: 5px; */ /* Using gap from parent */
+  border: 1px solid #bdddff; /* Lighter blue border for images */
+  padding: 3px;
+  background-color: #fff;
+  border-radius: 4px;
+}
+
+.fetched-brand-details .actions {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #cce0ff; /* Separator for actions */
+    display: flex;
+    gap: 10px;
+}
+.fetched-brand-details .actions button {
+    font-size: 0.9em;
+    padding: 8px 15px;
+}
+/* Ensure global .brand-card h3 styling doesn't conflict too much if .brand-card is on parent */
+.fetched-brand-details.brand-card h3 {
+    border-top: none; /* Remove top border for the main "Fetched Brand Details:" title */
+    padding-top: 0;
+    margin-top: 0;
+    font-size: 1.5em; /* Make main title larger */
+    color: #004a99;
+}

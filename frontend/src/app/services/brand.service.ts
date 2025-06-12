@@ -14,4 +14,11 @@ export class BrandService {
   getBrands(): Observable<Brand[]> {
     return this.http.get<Brand[]>(this.apiUrl);
   }
+
+  // New method
+  fetchBrandFromUrl(urlToFetch: string): Observable<Brand> {
+    // The backend expects an object like { "url": "some-url" }
+    const requestBody = { url: urlToFetch };
+    return this.http.post<Brand>(`${this.apiUrl}/fetch-from-url`, requestBody);
+  }
 }

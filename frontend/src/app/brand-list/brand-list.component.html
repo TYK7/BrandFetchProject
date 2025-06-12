@@ -3,12 +3,75 @@
   <!-- You can replace this with a spinner or a more sophisticated loading indicator -->
 </div>
 
-<div *ngIf="error" class="error">
+<div class="fetch-url-container">
+  <h2>Fetch New Brand from URL</h2>
+  <div class="form-group">
+    <label for="urlToFetchInput">Enter URL:</label>
+    <input type="url" id="urlToFetchInput" [(ngModel)]="urlToFetch" placeholder="https://example.com" (keyup.enter)="onFetchBrand()">
+    <button (click)="onFetchBrand()" [disabled]="!urlToFetch || !urlToFetch.trim() || isFetching">Fetch Brand</button>
+  </div>
+
+  <!-- Loading and error messages for the fetch operation -->
+  <div *ngIf="isFetching" class="loading">Fetching brand data...</div>
+  <div *ngIf="fetchError" class="error">{{ fetchError }}</div>
+
+  <!-- Placeholder for successfully fetched brand -->
+  <div *ngIf="fetchedBrand" class="fetched-brand-details brand-card"> <!-- Reuse brand-card for styling -->
+    <h3>Fetched Brand Details:</h3>
+
+    <h4 class="brand-name">{{ fetchedBrand.name }}</h4>
+
+    <img *ngIf="fetchedBrand.logoUrl" [src]="fetchedBrand.logoUrl" [alt]="fetchedBrand.name + ' Logo'" class="main-logo fetched-logo">
+
+    <p *ngIf="fetchedBrand.description" class="brand-description">{{ fetchedBrand.description }}</p>
+
+    <div *ngIf="fetchedBrand.colors && fetchedBrand.colors.length > 0">
+      <h5 class="section-title">Color Palette:</h5>
+      <div class="color-palette">
+        <span *ngFor="let color of fetchedBrand.colors" class="color-swatch-container">
+          <div class.bind="color-swatch" [style.background-color]="color"></div>
+          <span class="color-code">{{ color }}</span>
+        </span>
+      </div>
+    </div>
+
+    <div *ngIf="fetchedBrand.fonts && fetchedBrand.fonts.length > 0">
+      <h5 class="section-title">Fonts:</h5>
+      <ul class="font-list">
+        <li *ngFor="let font of fetchedBrand.fonts">{{ font }}</li>
+      </ul>
+    </div>
+
+    <div *ngIf="fetchedBrand.additionalLogoUrls && fetchedBrand.additionalLogoUrls.length > 0">
+      <h5 class="section-title">Additional Logos:</h5>
+      <div class="logo-list image-list">
+        <img *ngFor="let logoUrl of fetchedBrand.additionalLogoUrls" [src]="logoUrl" alt="Additional Logo">
+      </div>
+    </div>
+
+    <div *ngIf="fetchedBrand.imageUrls && fetchedBrand.imageUrls.length > 0">
+      <h5 class="section-title">Other Images:</h5>
+      <div class="image-list">
+        <img *ngFor="let imageUrl of fetchedBrand.imageUrls" [src]="imageUrl" alt="Brand Image">
+      </div>
+    </div>
+
+    <div class="actions" style="margin-top: 15px;">
+        <button (click)="addFetchedBrandToList()">Add to Main List</button>
+        <button (click)="clearFetchedBrand()" style="margin-left: 10px;">Clear Preview</button>
+    </div>
+  </div>
+</div>
+
+<hr> <!-- Separator -->
+
+<h2>Available Brands</h2>
+<div *ngIf="error" class="error"> <!-- Error for the main list -->
   <p>{{ error }}</p>
 </div>
 
-<div *ngIf="!isLoading && !error && brands.length === 0" class="no-brands">
-  <p>No brands found.</p>
+<div *ngIf="!isLoading && !error && brands.length === 0 && !fetchedBrand" class="no-brands"> <!-- Adjusted condition -->
+  <p>No brands found. Try fetching one from a URL.</p>
 </div>
 
 <div *ngIf="!isLoading && !error && brands.length > 0" class="brand-list-container">
