@@ -1,0 +1,70 @@
+.brand-list-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
+.brand-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  width: 200px;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+.brand-card img.main-logo { /* Adjusted to target main logo specifically */
+  max-width: 100%;
+  height: auto;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 10px;
+}
+.loading, .error, .no-brands {
+  text-align: center;
+  padding: 20px;
+  font-size: 1.2em;
+}
+
+.brand-card h3 { /* For section titles like "Colors:", "Fonts:" */
+  font-size: 0.9em;
+  font-weight: bold;
+  margin-top: 15px;
+  margin-bottom: 8px;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+}
+
+.color-swatch {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #ccc;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.font-list {
+  list-style: disc; /* Use disc for a typical bulleted list */
+  padding-left: 20px; /* Indent list items */
+  margin-top: 5px;
+}
+
+.font-list li {
+  margin-bottom: 3px;
+}
+
+.image-list, .logo-list {
+  display: flex; /* Allow images to wrap */
+  flex-wrap: wrap;
+  gap: 8px; /* Space between images */
+  padding-left: 0; /* Remove default list padding if it were a ul */
+  margin-top: 5px;
+}
+
+.image-list img, .logo-list img {
+  max-width: 100px;
+  max-height: 75px;
+  margin: 0; /* Replaced individual margin with gap on container */
+  border: 1px solid #eee;
+  padding: 2px;
+  object-fit: contain; /* Ensure image aspect ratio is maintained */
+  border-radius: 4px;
+}

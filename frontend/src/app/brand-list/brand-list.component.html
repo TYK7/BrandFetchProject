@@ -1,0 +1,49 @@
+<div *ngIf="isLoading" class="loading">
+  <p>Loading brands...</p>
+  <!-- You can replace this with a spinner or a more sophisticated loading indicator -->
+</div>
+
+<div *ngIf="error" class="error">
+  <p>{{ error }}</p>
+</div>
+
+<div *ngIf="!isLoading && !error && brands.length === 0" class="no-brands">
+  <p>No brands found.</p>
+</div>
+
+<div *ngIf="!isLoading && !error && brands.length > 0" class="brand-list-container">
+  <div *ngFor="let brand of brands" class="brand-card">
+    <img [src]="brand.logoUrl" [alt]="brand.name + ' Logo'" class="main-logo">
+    <h2>{{ brand.name }}</h2>
+    <p *ngIf="brand.description">{{ brand.description }}</p>
+
+    <div *ngIf="brand.colors && brand.colors.length > 0">
+      <h3>Colors:</h3>
+      <div *ngFor="let color of brand.colors" style="margin-bottom: 5px;">
+        <div class="color-swatch" [style.background-color]="color"></div>
+        <span>{{ color }}</span>
+      </div>
+    </div>
+
+    <div *ngIf="brand.fonts && brand.fonts.length > 0">
+      <h3>Fonts:</h3>
+      <ul class="font-list">
+        <li *ngFor="let font of brand.fonts">{{ font }}</li>
+      </ul>
+    </div>
+
+    <div *ngIf="brand.additionalLogoUrls && brand.additionalLogoUrls.length > 0">
+      <h3>Additional Logos:</h3>
+      <div class="logo-list">
+        <img *ngFor="let logoUrl of brand.additionalLogoUrls" [src]="logoUrl" alt="{{ brand.name }} Additional Logo">
+      </div>
+    </div>
+
+    <div *ngIf="brand.imageUrls && brand.imageUrls.length > 0">
+      <h3>Other Images:</h3>
+      <div class="image-list">
+        <img *ngFor="let imageUrl of brand.imageUrls" [src]="imageUrl" alt="{{ brand.name }} Image">
+      </div>
+    </div>
+  </div>
+</div>

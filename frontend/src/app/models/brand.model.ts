@@ -3,4 +3,8 @@ export interface Brand {
   name: string;
   logoUrl: string;
   description?: string;
+  colors?: string[];
+  fonts?: string[];
+  additionalLogoUrls?: string[];
+  imageUrls?: string[];
 }
