@@ -1,0 +1,20 @@
+<div *ngIf="isLoading" class="loading">
+  <p>Loading brands...</p>
+  <!-- You can replace this with a spinner or a more sophisticated loading indicator -->
+</div>
+
+<div *ngIf="error" class="error">
+  <p>{{ error }}</p>
+</div>
+
+<div *ngIf="!isLoading && !error && brands.length === 0" class="no-brands">
+  <p>No brands found.</p>
+</div>
+
+<div *ngIf="!isLoading && !error && brands.length > 0" class="brand-list-container">
+  <div *ngFor="let brand of brands" class="brand-card">
+    <img [src]="brand.logoUrl" [alt]="brand.name + ' Logo'">
+    <h2>{{ brand.name }}</h2>
+    <p *ngIf="brand.description">{{ brand.description }}</p>
+  </div>
+</div>
