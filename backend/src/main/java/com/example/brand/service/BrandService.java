@@ -68,6 +68,10 @@ public class BrandService {
         // Initialize collections for colors and fonts
         Set<String> foundColors = new HashSet<>();
         Set<String> foundFontFamilies = new HashSet<>();
+        // Initialize Set for all image URLs (from <img> tags and CSS backgrounds)
+        // This set was already being used for <img> tags later; ensure it's initialized here.
+        Set<String> allPageImageUrls = new HashSet<>();
+
 
         // A. Parse Inline Styles
         Elements styleTags = doc.select("style");
@@ -75,6 +79,7 @@ public class BrandService {
             String styleContent = styleTag.data();
             extractColorsFromCss(styleContent, foundColors);
             extractFontFamiliesFromCss(styleContent, foundFontFamilies);
+            extractBackgroundImagesFromCss(styleContent, allPageImageUrls, url); // url = base HTML page URL
         }
 
         // B. Fetch and Parse Linked CSS Files
@@ -91,6 +96,7 @@ public class BrandService {
                     if (cssContent != null) {
                         extractColorsFromCss(cssContent, foundColors);
                         extractFontFamiliesFromCss(cssContent, foundFontFamilies);
+                        extractBackgroundImagesFromCss(cssContent, allPageImageUrls, cssUrl); // cssUrl = base for this specific CSS file
                     }
                 } catch (IOException e) {
                     System.err.println("Error fetching CSS file: " + cssUrl + " - " + e.getMessage());
@@ -179,8 +185,7 @@ public class BrandService {
         }
         brand.setLogoUrl(logoUrl != null ? logoUrl.trim() : null);
 
-        // Collect all <img> tag sources for imageUrls
-        Set<String> allPageImageUrls = new HashSet<>();
+        // Collect all <img> tag sources for imageUrls (this adds to the same set)
         Elements imgTags = doc.select("img");
         for (Element imgTag : imgTags) {
             String imgSrc = imgTag.absUrl("src");
@@ -220,20 +225,27 @@ public class BrandService {
         if (cssContent == null || cssContent.isEmpty()) {
             return;
         }
+        String cleanedCss = cssContent.replaceAll("/\\*.*?\\*/", ""); // Remove CSS block comments
+
+        // Regex for hex colors (3, 6, 8 digits)
         Pattern hexPattern = Pattern.compile("#([0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3})\\b");
-        Matcher hexMatcher = hexPattern.matcher(cssContent);
+        Matcher hexMatcher = hexPattern.matcher(cleanedCss);
         while (hexMatcher.find()) {
             foundColors.add(hexMatcher.group(0).toLowerCase());
         }
 
-        Pattern rgbPattern = Pattern.compile("rgba?\\s*\\([^)]+\\)");
-        Matcher rgbMatcher = rgbPattern.matcher(cssContent);
+        // Refined Regex for rgb/rgba colors
+        // Matches rgb(R,G,B) or rgba(R,G,B,A) where R,G,B are numbers or percentages, A is number or percentage.
+        Pattern rgbPattern = Pattern.compile("rgba?\\s*\\(\\s*\\d{1,3}%?\\s*,\\s*\\d{1,3}%?\\s*,\\s*\\d{1,3}%?\\s*(?:,\\s*[0-9.]+%?\\s*)?\\)");
+        Matcher rgbMatcher = rgbPattern.matcher(cleanedCss);
         while (rgbMatcher.find()) {
             foundColors.add(rgbMatcher.group(0).replaceAll("\\s+", "").toLowerCase());
         }
 
-        Pattern hslPattern = Pattern.compile("hsla?\\s*\\([^)]+\\)");
-        Matcher hslMatcher = hslPattern.matcher(cssContent);
+        // Refined Regex for hsl/hsla colors
+        // Matches hsl(H,S,L) or hsla(H,S,L,A) where H,S,L,A are numbers or percentages.
+        Pattern hslPattern = Pattern.compile("hsla?\\s*\\(\\s*[0-9.]+%?\\s*,\\s*[0-9.]+%?\\s*,\\s*[0-9.]+%?\\s*(?:,\\s*[0-9.]+%?\\s*)?\\)");
+        Matcher hslMatcher = hslPattern.matcher(cleanedCss);
         while (hslMatcher.find()) {
             foundColors.add(hslMatcher.group(0).replaceAll("\\s+", "").toLowerCase());
         }
@@ -243,14 +255,47 @@ public class BrandService {
         if (cssContent == null || cssContent.isEmpty()) {
             return;
         }
+        String cleanedCss = cssContent.replaceAll("/\\*.*?\\*/", ""); // Remove CSS block comments
+
+        // Regex for font-family declarations.
         Pattern pattern = Pattern.compile("font-family\\s*:\\s*([^;!}]+)");
-        Matcher matcher = pattern.matcher(cssContent);
+        Matcher matcher = pattern.matcher(cleanedCss);
         while (matcher.find()) {
             String[] fonts = matcher.group(1).split(",");
             for (String font : fonts) {
                 String cleanedFont = font.trim().replaceAll("^['\"]|['\"]$", "").trim();
                 if (!cleanedFont.isEmpty() && cleanedFont.length() > 1) {
                     foundFontFamilies.add(cleanedFont);
+                }
+            }
+        }
+    }
+
+    private void extractBackgroundImagesFromCss(String cssContent, Set<String> foundImageUrls, String baseUrl) {
+        if (cssContent == null || cssContent.isEmpty() || baseUrl == null || baseUrl.isEmpty()) {
+            return;
+        }
+        String cleanedCss = cssContent.replaceAll("/\\*.*?\\*/", ""); // Remove CSS block comments
+
+        // Regex to find url(...) patterns within background or background-image properties
+        // Captures the content of url(). Case-insensitive matching for property names.
+        Pattern pattern = Pattern.compile(
+            "(?:background(?:-image)?)\\s*:[^;}]*?url\\s*\\(\\s*['\"]?([^'\"()\\s][^'\"()]*?)['\"]?\\s*\\)",
+            Pattern.CASE_INSENSITIVE
+        );
+        Matcher matcher = pattern.matcher(cleanedCss);
+
+        while (matcher.find()) {
+            String extractedUrl = matcher.group(1);
+            if (extractedUrl != null && !extractedUrl.isEmpty() && !extractedUrl.startsWith("data:")) { // Ignore data URIs
+                try {
+                    // Ensure baseUrl is properly formed for context
+                    java.net.URL base = new java.net.URL(baseUrl);
+                    java.net.URL resolvedUrl = new java.net.URL(base, extractedUrl.trim());
+                    foundImageUrls.add(resolvedUrl.toString());
+                } catch (java.net.MalformedURLException e) {
+                    // Log or handle malformed URLs - e.g., if baseUrl is invalid or extractedUrl is too malformed
+                    // System.err.println("Malformed URL encountered: " + extractedUrl + " (Base: " + baseUrl + ") - " + e.getMessage());
                 }
             }
         }
