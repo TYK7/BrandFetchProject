@@ -17,6 +17,10 @@ export class BrandListComponent implements OnInit {
   fetchError: string | null = null; // For URL fetching error
   fetchedBrand: Brand | null = null; // To store the successfully fetched brand
 
+  showAllColors: boolean = false;
+  showAllFonts: boolean = false;
+  showAllImages: boolean = false;
+
   constructor(private brandService: BrandService) { }
 
   ngOnInit(): void {
@@ -59,6 +63,9 @@ export class BrandListComponent implements OnInit {
       next: (brand) => {
         this.isFetching = false;
         this.fetchedBrand = brand;
+        this.showAllColors = false; // Reset toggles
+        this.showAllFonts = false;
+        this.showAllImages = false;
         // console.log('Fetched brand:', brand);
       },
       error: (err) => {
@@ -84,6 +91,9 @@ export class BrandListComponent implements OnInit {
       }
       this.fetchedBrand = null; // Clear preview
       this.urlToFetch = ''; // Clear input
+      this.showAllColors = false;
+      this.showAllFonts = false;
+      this.showAllImages = false;
     }
   }
 
@@ -91,5 +101,8 @@ export class BrandListComponent implements OnInit {
     this.fetchedBrand = null;
     this.fetchError = null; // Also clear any fetch error related to this preview
     this.urlToFetch = ''; // Clear input
+    this.showAllColors = false;
+    this.showAllFonts = false;
+    this.showAllImages = false;
   }
 }

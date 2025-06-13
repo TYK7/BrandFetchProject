@@ -296,3 +296,99 @@
     font-size: 1.5em; /* Make main title larger */
     color: #004a99;
 }
+
+/* Enhanced display for fetched brand details */
+.fetched-brand-details .primary-logo {
+    max-width: 180px; /* Slightly smaller than .fetched-logo if that was bigger */
+    max-height: 120px;
+    display: block;
+    margin-bottom: 15px;
+    border: 1px solid #bdddff; /* Consistent with other images in preview */
+    padding: 3px;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.raw-color-palette, .raw-font-list, .raw-image-gallery {
+    max-height: 220px; /* Slightly reduced max height */
+    overflow-y: auto;
+    border: 1px dashed #cce0ff; /* Lighter dashed border */
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 8px; /* Space before ellipsis note */
+    background-color: #ffffff; /* White background for raw lists */
+    border-radius: 4px;
+}
+
+.raw-image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px; /* Consistent gap */
+}
+
+.gallery-image {
+    width: 80px;  /* Fixed width for gallery images */
+    height: 80px; /* Fixed height for gallery images */
+    border: 1px solid #ddd;
+    object-fit: cover; /* Use cover to fill the fixed dimensions */
+    border-radius: 3px;
+    background-color: #f8f8f8; /* Light bg for images */
+}
+
+.toggle-list-btn {
+    font-size: 0.75em; /* Smaller button */
+    padding: 3px 8px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    border: 1px solid #007bff;
+    background-color: #e7f3ff;
+    color: #007bff;
+}
+.toggle-list-btn:hover {
+    background-color: #d0e7ff;
+}
+
+.ellipsis-note {
+    font-style: italic;
+    font-size: 0.85em; /* Slightly smaller */
+    color: #666;
+    margin-top: 3px;
+    margin-bottom: 10px;
+}
+
+/* Ensure section titles are distinct */
+.fetched-brand-details .section-title {
+    font-size: 1.0em; /* Standardized section title size */
+    font-weight: bold;
+    margin-top: 18px;
+    margin-bottom: 10px; /* Increased bottom margin */
+    color: #0056b3; /* Consistent color */
+    border-bottom: 1px solid #cce0ff; /* Lighter border */
+    padding-bottom: 6px; /* Increased padding */
+    display: flex; /* To align button on the same line */
+    justify-content: space-between;
+    align-items: center;
+}
+/* Overriding some very specific .brand-card h3 styles if .fetched-brand-details also has .brand-card */
+.fetched-brand-details.brand-card .section-title {
+    border-top: none; /* Remove potential double border if h5 is used inside h3 context from .brand-card */
+    padding-top: 0;
+}
+
+.fetched-brand-details .disclaimer-note {
+  font-size: 0.85em;
+  font-style: italic;
+  color: #444; /* Slightly darker for better readability */
+  background-color: #fdf5e6; /* A very light, warm yellow/beige for a 'note' feel */
+  padding: 10px; /* More padding */
+  border-radius: 4px;
+  margin-top: 8px; /* Space from title */
+  margin-bottom: 20px; /* More space before actual data sections */
+  border: 1px solid #f0e0c0; /* Border matching the background tone */
+  line-height: 1.4;
+}
+
+.fetched-brand-details .disclaimer-note strong {
+    color: #333; /* Darker color for the "Please note:" part */
+}
