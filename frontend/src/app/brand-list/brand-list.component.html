@@ -32,20 +32,30 @@
         <img [src]="fetchedBrand.logoUrl" [alt]="fetchedBrand.name + ' Logo'" class="fetched-logo primary-logo">
     </div>
 
-    <!-- Display All Extracted Colors -->
-    <div *ngIf="fetchedBrand.colors && fetchedBrand.colors.length > 0">
+    <!-- Website Colors Section -->
+    <div *ngIf="websiteColors.length > 0">
         <h5 class="section-title">
-            All Colors Found in CSS ({{ fetchedBrand.colors.length }}):
-            <button *ngIf="fetchedBrand.colors.length > 10 && !showAllColors" (click)="showAllColors = true" class="toggle-list-btn">Show All</button>
-            <button *ngIf="showAllColors" (click)="showAllColors = false" class="toggle-list-btn">Show Less</button>
+            Website Colors (First {{ websiteColors.length }} Found in CSS):
         </h5>
         <div class="color-palette raw-color-palette">
-            <span *ngFor="let color of (showAllColors ? fetchedBrand.colors : fetchedBrand.colors.slice(0, 10)); let i = index" class="color-swatch-container">
+            <span *ngFor="let color of websiteColors" class="color-swatch-container">
                 <div class="color-swatch" [style.background-color]="color"></div>
                 <span class="color-code">{{ color }}</span>
             </span>
         </div>
-        <p *ngIf="fetchedBrand.colors.length > 10 && !showAllColors" class="ellipsis-note">... and {{ fetchedBrand.colors.length - 10 }} more.</p>
+    </div>
+
+    <!-- Logo Colors Section -->
+    <div *ngIf="logoColors.length > 0">
+        <h5 class="section-title">
+            Logo Colors (Heuristically Determined - {{ logoColors.length }} Found):
+        </h5>
+        <div class="color-palette raw-color-palette"> <!-- Can reuse same styling -->
+            <span *ngFor="let color of logoColors" class="color-swatch-container">
+                <div class="color-swatch" [style.background-color]="color"></div>
+                <span class="color-code">{{ color }}</span>
+            </span>
+        </div>
     </div>
 
     <!-- Display All Extracted Fonts -->

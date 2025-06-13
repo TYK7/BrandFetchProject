@@ -17,11 +17,31 @@ export class BrandListComponent implements OnInit {
   fetchError: string | null = null; // For URL fetching error
   fetchedBrand: Brand | null = null; // To store the successfully fetched brand
 
-  showAllColors: boolean = false;
+  // showAllColors: boolean = false; // Removed
   showAllFonts: boolean = false;
   showAllImages: boolean = false;
 
   constructor(private brandService: BrandService) { }
+
+  get websiteColors(): string[] {
+    if (this.fetchedBrand && this.fetchedBrand.colors) {
+      return this.fetchedBrand.colors.slice(0, 10);
+    }
+    return [];
+  }
+
+  get logoColors(): string[] {
+    if (this.fetchedBrand && this.fetchedBrand.colors && this.fetchedBrand.colors.length > 10) {
+      return this.fetchedBrand.colors.slice(10);
+    }
+    // If we want to show *all* colors as "logo colors" if less than 10 were found in total,
+    // this logic would need to change. For now, it's strictly "colors after the first 10".
+    // To show all if total <=10, it would be:
+    // if (this.fetchedBrand && this.fetchedBrand.colors && this.fetchedBrand.colors.length <= 10) {
+    //   return this.fetchedBrand.colors;
+    // }
+    return [];
+  }
 
   ngOnInit(): void {
     this.loadBrands();
@@ -63,7 +83,7 @@ export class BrandListComponent implements OnInit {
       next: (brand) => {
         this.isFetching = false;
         this.fetchedBrand = brand;
-        this.showAllColors = false; // Reset toggles
+        // this.showAllColors = false; // Removed
         this.showAllFonts = false;
         this.showAllImages = false;
         // console.log('Fetched brand:', brand);
@@ -91,7 +111,7 @@ export class BrandListComponent implements OnInit {
       }
       this.fetchedBrand = null; // Clear preview
       this.urlToFetch = ''; // Clear input
-      this.showAllColors = false;
+      // this.showAllColors = false; // Removed
       this.showAllFonts = false;
       this.showAllImages = false;
     }
@@ -101,7 +121,7 @@ export class BrandListComponent implements OnInit {
     this.fetchedBrand = null;
     this.fetchError = null; // Also clear any fetch error related to this preview
     this.urlToFetch = ''; // Clear input
-    this.showAllColors = false;
+    // this.showAllColors = false; // Removed
     this.showAllFonts = false;
     this.showAllImages = false;
   }
